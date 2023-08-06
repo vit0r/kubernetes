@@ -27,19 +27,19 @@ helm repo add grafana https://grafana.github.io/helm-charts
 ## cert-manager
 
 ```console
-helm upgrade -i itnk-cert-manager jetstack/cert-manager -n cert-manager --create-namespace --set installCRDs=true --max-history 2
+helm upgrade -i itnk-cert-manager jetstack/cert-manager -n cert-manager --create-namespace --set installCRDs=true
 ```
 
 ## metallb
 
 ```console
-helm upgrade -i itnk-metallb metallb/metallb --set installCRDs=true -n metallb-system --create-namespace --max-history 2
+helm upgrade -i itnk-metallb metallb/metallb --set installCRDs=true -n metallb-system --create-namespace
 ```
 
 ## nginx-ingress
 
 ```console
-helm upgrade -i itnk-ingress-nginx -n ingress-nginx ingress-nginx/ingress-nginx --create-namespace --max-history 2
+helm upgrade -i itnk-ingress-nginx -n ingress-nginx ingress-nginx/ingress-nginx --create-namespace
 ```
 
 ## nfs-server
@@ -51,7 +51,7 @@ helm upgrade -i itnk-ingress-nginx -n ingress-nginx ingress-nginx/ingress-nginx 
 ## nfs-provisioner
 
 ```console
-helm install itnk-nfs-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=x.x.x.x --set nfs.path=/data
+helm upgrade -i itnk-nfs-provisioner nfs-subdir-external-provisioner/ --create-namespace -n storage nfs-subdir-external-provisioner --set nfs.server=x.x.x.x --set nfs.path=/data
 ```
 
 ## hashicorp
@@ -59,24 +59,24 @@ helm install itnk-nfs-provisioner nfs-subdir-external-provisioner/nfs-subdir-ext
 ### vault
 
 ```console
-helm upgrade -i itnk-vault hashicorp/vault --version 0.25.0 --max-history 2
-helm upgrade -i itnk-vault-secrets-operator hashicorp/vault-secrets-operator --version 0.1.0 --max-history 2
+helm upgrade -i itnk-vault hashicorp/vault --version 0.25.0 --create-namespace -n vault
+helm upgrade -i itnk-vault-secrets-operator hashicorp/vault-secrets-operator --version 0.1.0 --create-namespace -n vault
 ```
 
 ### consul
 
 ```console
-helm upgrade -i itnk-consul hashicorp/consul --version 1.2.0 --max-history 2
+helm upgrade -i itnk-consul hashicorp/consul --version 1.2.0 --create-namespace -n consul
 ```
 
 ## Prometheus stack
 
 ```console
-helm install itnk-prometheus-stack prometheus-community/kube-prometheus-stack --version 48.3.1 --max-history 2
+helm install itnk-prometheus-stack prometheus-community/kube-prometheus-stack --version 48.3.1 --create-namespace -n monitoring
 ```
 
 ## Grafana Loki
 
 ```console
-helm install itnk-loki grafana/loki --version 5.10.0 --max-history 2
+helm install itnk-loki grafana/loki --version 5.10.0 --create-namespace -n monitoring
 ```
