@@ -21,6 +21,7 @@ helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add hashicorp https://helm.releases.hashicorp.com
+helm repo add grafana https://grafana.github.io/helm-charts
 ```
 
 ## cert-manager
@@ -72,4 +73,10 @@ helm upgrade -i itnk-consul hashicorp/consul --version 1.2.0 --max-history 2
 
 ```console
 helm install itnk-prometheus-stack prometheus-community/kube-prometheus-stack --version 48.3.1 --max-history 2
+```
+
+## Grafana Loki
+
+```console
+helm install itnk-loki grafana/loki --version 5.10.0 --max-history 2
 ```
