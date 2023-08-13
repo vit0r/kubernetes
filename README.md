@@ -33,19 +33,42 @@ helm upgrade -i itnk-cert-manager jetstack/cert-manager -n cert-manager --create
 ## metallb
 
 ```console
-helm upgrade -i itnk-metallb metallb/metallb --set installCRDs=true -n metallb-system --create-namespace
+helm upgrade -i itnk-metallb metallb/metallb --set installCRDs=true -n metallb-system --create-namespace --wait
+# https://kind.sigs.k8s.io/docs/user/loadbalancer/
+cat <<EOF |
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.100.200-192.168.100.200
+  autoAssign: true
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - default
+<<EOF
 ```
 
 ## nginx-ingress
 
 ```console
-helm upgrade -i itnk-ingress-nginx -n ingress-nginx ingress-nginx/ingress-nginx --create-namespace
+helm upgrade -i itnk-ingress-nginx -n ingress-nginx ingress-nginx/ingress-nginx --set controller.config.ssl-redirect="false" --set controller.service.externalTrafficPolicy="Local" --set controller.service.loadBalancerIP="192.168.100.200" --set controller.service.nodePorts.http="30010" --set controller.service.nodePorts.https="30011" --create-namespace
 ```
 
-## nfs-server
+## nfs-server on docker
 
 ```console
-:todo
+# https://sysadmins.co.za/setup-a-nfs-server-with-docker/
+mkdir -p $HOME/kinddata
+docker run --name itnk-nfs --privileged -h itnk-nfs --network kind -v $HOME/kinddata:/data -p 2049:2049 -e SHARED_DIRECTORY=/data itsthenetwork/nfs-server-alpine:12
 ```
 
 ## nfs-provisioner
