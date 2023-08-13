@@ -74,7 +74,7 @@ docker run --name itnk-nfs --privileged -h itnk-nfs --network kind -v $HOME/kind
 ## nfs-provisioner
 
 ```console
-helm upgrade -i itnk-nfs-provisioner nfs-subdir-external-provisioner/ --create-namespace -n storage nfs-subdir-external-provisioner --set nfs.server=x.x.x.x --set nfs.path=/data
+helm upgrade -i itnk-nfs-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --create-namespace -n storage --set storageClass.name="itnk-nfs" --set nfs.server="itnk-nfs" --set nfs.path=/data
 ```
 
 ## hashicorp
